@@ -1,39 +1,35 @@
 package org.alex.games.bj;
 
+import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.image.FilteredImageSource;
-import java.io.IOException;
-import java.io.InputStream;
-import java.awt.image.BufferedImage;
-import java.awt.image.CropImageFilter;
-
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JPanel;
-
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ConvolveOp;
 import java.awt.image.Kernel;
 import java.io.File;
-import javax.imageio.ImageIO;
 import java.io.IOException;
+import java.io.InputStream;
+
+import javax.imageio.ImageIO;
+import javax.swing.JPanel;
+
+import org.alex.games.bj.beans.CARDLETTER;
+import org.alex.games.bj.beans.SUITS;
 
 
 public class FeltTop extends JPanel {
 
 	private BufferedImage image = null;
 
+	// the file is src/java/resources/deck-of-cards.jpg
+	// Use a leading slash to indicate the path starts from the root of the classpath
+	public static final String DECK_OF_CARDS = "/deck-of-cards.jpg"; 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -8050655045065678999L;
 
-	public FeltTop(){
-
-		// the file is src/java/resources/deck-of-cards.jpg
-		// Use a leading slash to indicate the path starts from the root of the classpath
-		String resourcePath = "/deck-of-cards.jpg"; 
+	public FeltTop(String resourcePath){
 		try (InputStream is = FeltTop.class.getResourceAsStream(resourcePath)) {
 			if (is == null) {
 				throw new RuntimeException("Resource not found: " + resourcePath);
@@ -56,20 +52,52 @@ public class FeltTop extends JPanel {
 
 	public void paint(Graphics g){
 		super.paint(g);
-		//http://www.java2s.com/Code/Java/2D-Graphics-GUI/Imagecrop.htm
 		//g.drawImage(image, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, observer)
 	}
 
 	public static void main(String[] args) throws IOException {
-		FeltTop f = new FeltTop();
-		f.getExtents(f.image);
+		FeltTop f = new FeltTop(DECK_OF_CARDS);
+		//f.getExtents(f.image);
 		// Detect edges
-		BufferedImage edges = detectEdges(f.image);
-
-		// Save the resulting edge image (replace "edges.png" with desired output file path)
-		ImageIO.write(edges, "png", new File("edges.png"));
+		BufferedImage edgesImage = detectEdges(f.image);
+		f.getExtents(edgesImage);
+		
+		// Save the resulting edge image
+		ImageIO.write(edgesImage, "png", new File("edges.png"));
 		System.out.println("Edge detection complete. Result saved to edges.png");
 
+		f.cutImageCards();
+		
+	}
+
+	
+	private void cutImageCards() throws IOException {
+		int startX = 40;
+		int startY = 50;
+		int cardWidth = 61;
+		int cardHeigth = 80;
+		int horizontalGap = 17;
+		int verticalGap = 17;
+		int x;
+		int y = startY;
+		for (SUITS s : SUITS.values()) {
+			x = startX;
+			for (CARDLETTER c : CARDLETTER.values()) {
+				BufferedImage cardImage = cropImage(this.image, x, y, cardWidth, cardHeigth);
+				ImageIO.write(cardImage, "png", new File(s.name() + "_" + c.name() + ".png"));
+				x += cardWidth + horizontalGap; 
+			}
+			y += cardHeigth + verticalGap;
+		}
+		
+		//draw some lines to help find the correct sizes
+		 Graphics2D g2d = image.createGraphics();
+		 g2d.setColor(Color.YELLOW);
+		 for (x = startX; x < image.getWidth(); x+= cardWidth + horizontalGap ) {
+			 g2d.drawLine(x, startY - 5, x, startY);
+			 g2d.drawLine(x + cardWidth, startY - 5, x + cardWidth, startY);
+		 }
+		 ImageIO.write(image, "png", new File("aGuides.png"));
 	}
 
 	public static BufferedImage detectEdges(BufferedImage originalImage) {
@@ -94,28 +122,29 @@ public class FeltTop extends JPanel {
 	}
 
 	private void getExtents(BufferedImage image) {
-		System.out.println("Image deck-of-cards.jpg is wide=" + image.getWidth() + " height=" + image.getHeight() );
+		System.out.println("Image is wide=" + image.getWidth() + " height=" + image.getHeight() );
 
 		int lastRow = 0;
 		for (int y=0; y < 60; y++) { //image.getHeight(); y++) {
 			int rowSum = 0;
-			boolean rowIsGreen = true;
+			boolean rowIsEmpty = true;
 			for (int x=0; x < image.getWidth(); x++) {
 				int pixel = image.getRGB(x, y);
-				rowSum += pixel;
+				//rowSum += pixel;
 				// Use bitwise operations for performance (more efficient)
 				// Use unsigned right shift
 				//int alpha = (pixel >> 24) & 0xff;  //alpha here is always 255 because jpg doesn't have transparency
 				int red = (pixel >> 16) & 0xff;
 				int green = (pixel >> 8) & 0xff;
 				int blue = pixel & 0xff;
-				if (red > 6 && blue > 7 && !(green >123 && green < 132))  {
-					System.out.println(x + ","+ y + "=" + red + ", " + green + ", " + blue);
-					rowIsGreen = false;
+				rowSum += red + blue + green;
+				if (red + blue + green > 10) {
+					//System.out.println(x + ","+ y + "=" + red + ", " + green + ", " + blue + " total=" + (red+green+blue) );
+					rowIsEmpty = false;
 				}
 			}
 			if (rowSum != lastRow) {
-				System.out.println("row " + y + " change detected " + rowSum  +" all green=" + rowIsGreen);
+				System.out.println("row " + y + " change detected " + rowSum  +" all green=" + rowIsEmpty);
 			}
 			lastRow = rowSum;
 		}

@@ -19,7 +19,7 @@ public class MemorizeGame {
 	// number of decks
 	public static final int NUMBER_OF_DECKS = 6;
 
-	private final static FeltTop feltTop = new FeltTop();
+	private final static FeltTop feltTop = new FeltTop(FeltTop.DECK_OF_CARDS);
 
 	/**
 	 * @param args
