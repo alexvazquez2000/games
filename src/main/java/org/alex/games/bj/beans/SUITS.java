@@ -1,8 +1,8 @@
 package org.alex.games.bj.beans;
 
 public enum SUITS {
-	//they must be in this order to match the image on games/src/main/resources/deck-of-cards.jpg
-	CLUBS("♣"), DIAMONDS("♦"), HEARTS("♥"), SPADES("♠");
+	//they must be in this order to match the image on games/src/main/resources/English_pattern_playing_cards_deck.png
+	SPADES("♠"), HEARTS("♥"), DIAMONDS("♦"), CLUBS("♣");
 
 	private String value;
 

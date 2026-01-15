@@ -23,7 +23,7 @@ public class FeltTop extends JPanel {
 
 	// the file is src/java/resources/deck-of-cards.jpg
 	// Use a leading slash to indicate the path starts from the root of the classpath
-	public static final String DECK_OF_CARDS = "/deck-of-cards.jpg"; 
+	public static final String DECK_OF_CARDS = "/English_pattern_playing_cards_deck.png"; 
 	/**
 	 * 
 	 */
@@ -59,12 +59,12 @@ public class FeltTop extends JPanel {
 		FeltTop f = new FeltTop(DECK_OF_CARDS);
 		//f.getExtents(f.image);
 		// Detect edges
-		BufferedImage edgesImage = detectEdges(f.image);
-		f.getExtents(edgesImage);
+		//BufferedImage edgesImage = detectEdges(f.image);
+		//f.getExtents(edgesImage);
 		
 		// Save the resulting edge image
-		ImageIO.write(edgesImage, "png", new File("edges.png"));
-		System.out.println("Edge detection complete. Result saved to edges.png");
+		//ImageIO.write(edgesImage, "png", new File("edges.png"));
+		//System.out.println("Edge detection complete. Result saved to edges.png");
 
 		f.cutImageCards();
 		
@@ -72,31 +72,56 @@ public class FeltTop extends JPanel {
 
 	
 	private void cutImageCards() throws IOException {
-		int startX = 40;
-		int startY = 50;
-		int cardWidth = 61;
-		int cardHeigth = 80;
-		int horizontalGap = 17;
-		int verticalGap = 17;
-		int x;
-		int y = startY;
+		int startX = 21;
+		int startY = 21;
+		int cardWidth = 273;
+		int cardHeigth = 409;
+		
+		int[] columns = new int[] {
+				21, //A
+				315, //2
+				608,
+				902,
+				1196,
+				1489,
+				1783,
+				2077, //8
+				2370,
+				2664, //10
+				2958,
+				3251,
+				3545 //K
+		};
+		int[] rows = new int[] {
+				21,
+				450,
+				879,
+				1309
+		};
+		int row = 0;
 		for (SUITS s : SUITS.values()) {
-			x = startX;
+			int column = 0;
 			for (CARDLETTER c : CARDLETTER.values()) {
-				BufferedImage cardImage = cropImage(this.image, x, y, cardWidth, cardHeigth);
+				BufferedImage cardImage = cropImage(this.image, columns[column], rows[row], cardWidth, cardHeigth);
 				ImageIO.write(cardImage, "png", new File(s.name() + "_" + c.name() + ".png"));
-				x += cardWidth + horizontalGap; 
+				column ++;
 			}
-			y += cardHeigth + verticalGap;
+			row ++;
 		}
 		
 		//draw some lines to help find the correct sizes
 		 Graphics2D g2d = image.createGraphics();
 		 g2d.setColor(Color.YELLOW);
-		 for (x = startX; x < image.getWidth(); x+= cardWidth + horizontalGap ) {
-			 g2d.drawLine(x, startY - 5, x, startY);
-			 g2d.drawLine(x + cardWidth, startY - 5, x + cardWidth, startY);
+		 for (int x = 0; x < columns.length; x++) {
+			 g2d.drawLine(columns[x], startY, columns[x], startY + 50);
+			 g2d.drawLine(columns[x] + cardWidth, startY, columns[x] + cardWidth, startY + 50);
 		 }
+		 
+		 for (int y = 0; y < rows.length; y++ ) {
+			 g2d.drawLine(startX , rows[y], startX + 50, rows[y]);
+			 g2d.drawLine(startX, rows[y] + cardHeigth, startX + 50, rows[y] + cardHeigth);
+		 }
+		
 		 ImageIO.write(image, "png", new File("aGuides.png"));
 	}
 
@@ -125,7 +150,7 @@ public class FeltTop extends JPanel {
 		System.out.println("Image is wide=" + image.getWidth() + " height=" + image.getHeight() );
 
 		int lastRow = 0;
-		for (int y=0; y < 60; y++) { //image.getHeight(); y++) {
+		for (int y=0; y < 23; y++) { //image.getHeight(); y++) {
 			int rowSum = 0;
 			boolean rowIsEmpty = true;
 			for (int x=0; x < image.getWidth(); x++) {
@@ -143,9 +168,7 @@ public class FeltTop extends JPanel {
 					rowIsEmpty = false;
 				}
 			}
-			if (rowSum != lastRow) {
-				System.out.println("row " + y + " change detected " + rowSum  +" all green=" + rowIsEmpty);
-			}
+			System.out.println("row " + y + " total " + rowSum  +" all green=" + rowIsEmpty);
 			lastRow = rowSum;
 		}
 	}
