@@ -8,7 +8,7 @@ public class Card {
 	private String longName;
 	private int numValue = 0;
 	private boolean open= false;
-	
+
 	public Card(SUITS suit, CARDLETTER cardLetter) {
 		this.suit = suit;
 		this.cardLetter = cardLetter;
@@ -19,9 +19,8 @@ public class Card {
 		//FIXME: This is needed for BJ
 		//But not for spider
 		//if (numValue > 10) numValue=10;
-		
 	}
-	
+
 	/**
 	 * 2,3,4,5,6,7,8,9, 10, J, Q, K, A
 	 * @return the shortName  
@@ -48,7 +47,6 @@ public class Card {
 		return longName;
 	}
 
-
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
@@ -57,7 +55,6 @@ public class Card {
 		return shortName;
 	}
 
-
 	/**
 	 * @return true is card is Ace
 	 */
@@ -65,8 +62,8 @@ public class Card {
 		if (cardLetter==CARDLETTER.A) return true;
 		return false;		
 	}
-	
-	public int getNumValue() {		
+
+	public int getNumValue() {
 		return numValue;
 	}
 
@@ -89,5 +86,6 @@ public class Card {
 	 */
 	public SUITS getSuit() {
 		return suit;
-	}	
+	}
+
 }

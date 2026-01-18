@@ -3,7 +3,7 @@ package org.alex.games.bj.beans;
 import org.alex.games.bj.handler.StatsTable;
 
 public class DealerHand extends Hand{
-	
+
 	public DealerHand(Card openCard, Card closeCard) {
 		super(openCard,closeCard);
 	}
@@ -80,7 +80,7 @@ public class DealerHand extends Hand{
 		if (user.isSplit()){
 			gameStatus = StatsTable.getInstance().finalHandInfo(gameStatus, this, user.getSplitHand1());
 			winnings += handleMoney(gameStatus,user.getSplitHand1().getBet());
-			
+
 			gameStatus = StatsTable.getInstance().finalHandInfo(gameStatus, this, user.getSplitHand2());
 			winnings += handleMoney(gameStatus,user.getSplitHand2().getBet());
 		} else {
