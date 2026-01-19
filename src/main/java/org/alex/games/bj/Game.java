@@ -23,7 +23,7 @@ public class Game {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		Shoe.Initialize(6);  //number of decks
+		Shoe.initialize(6);  //number of decks
 				
 		JFrame jfrm = new JFrame("Black");
 		jfrm.setSize(1200, 800);

@@ -130,7 +130,7 @@ public class Solitaire {
 	}
 
 	private Solitaire(){
-		Shoe.Initialize(2);  //number of decks
+		Shoe.initialize(2);  //number of decks
 		board = new Board();
 	}
 }

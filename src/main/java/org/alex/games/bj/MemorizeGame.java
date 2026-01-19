@@ -26,7 +26,7 @@ public class MemorizeGame {
 	 */
 	public static void main(String[] args) {
 		// number of decks
-		Shoe.Initialize(NUMBER_OF_DECKS);
+		Shoe.initialize(NUMBER_OF_DECKS);
 
 		JFrame jfrm = new JFrame("Mem Card");
 		jfrm.setSize(1200, 800);
