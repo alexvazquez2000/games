@@ -4,10 +4,10 @@ import org.alex.games.bj.beans.Shoe;
 
 public class Board {
 	private Column[] columns;
-	
-	public Board(){
+
+	public Board() {
 		columns = new Column[10];
-		for (int x=0;x<10;x++){
+		for (int x = 0; x < 10; x++) {
 			columns[x] = new Column(x);
 		}
 	}
@@ -34,11 +34,10 @@ public class Board {
 	}
 
 	public void print() {
-		for (int x=0;x<10;x++){
+		for (int x = 0; x < 10; x++) {
 			columns[x].print();
 		}
 		Shoe.print();
 	}
-	
-	
+
 }

@@ -8,7 +8,7 @@ public class Move {
 	private int toCol;
 	private Card card;
 	private int weight;
-	
+
 	/**
 	 * @param fromCol
 	 * @param toCol
@@ -77,5 +77,5 @@ public class Move {
 	public void setWeight(int weight) {
 		this.weight = weight;
 	}
-	
+
 }

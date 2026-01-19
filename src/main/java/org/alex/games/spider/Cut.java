@@ -8,7 +8,7 @@ public class Cut {
 	private Card parent;
 	private int index;
 	private int weight;
-	
+
 	public Cut(Card card, Card parent, int index, int weight) {
 		super();
 		this.card = card;
@@ -72,5 +72,5 @@ public class Cut {
 	public void setWeight(int weight) {
 		this.weight = weight;
 	}
-	
+
 }
