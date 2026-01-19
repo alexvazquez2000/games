@@ -26,32 +26,32 @@ public class SimpleCards {
 	}
 
 	public SimpleCards() {
-		EventQueue.invokeLater( () -> {
-				try {
-					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-				} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
-						| UnsupportedLookAndFeelException ex) {
-					ex.printStackTrace();
-				}
+		EventQueue.invokeLater(() -> {
+			try {
+				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+					| UnsupportedLookAndFeelException ex) {
+				ex.printStackTrace();
+			}
 
-				Deck.INSTANCE.shuffle();
-				List<Hand> players = new ArrayList<>(5);
-				for (int index = 0; index < 5; index++) {
-					players.add(new Hand());
-				}
+			Deck.INSTANCE.shuffle();
+			List<Hand> players = new ArrayList<>(5);
+			for (int index = 0; index < 5; index++) {
+				players.add(new Hand());
+			}
 
-				for (int index = 0; index < 5; index++) {
-					for (Hand hand : players) {
-						hand.add(Deck.INSTANCE.pop());
-					}
+			for (int index = 0; index < 5; index++) {
+				for (Hand hand : players) {
+					hand.add(Deck.INSTANCE.pop());
 				}
+			}
 
-				JFrame frame = new JFrame("Testing");
-				frame.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-				frame.add(new GamePane(players));
-				frame.pack();
-				frame.setLocationRelativeTo(null);
-				frame.setVisible(true);
+			JFrame frame = new JFrame("Testing");
+			frame.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+			frame.add(new GamePane(players));
+			frame.pack();
+			frame.setLocationRelativeTo(null);
+			frame.setVisible(true);
 		});
 	}
 
@@ -222,7 +222,7 @@ public class SimpleCards {
 			int cardHeight = (getHeight() - 20) / 3;
 			int cardWidth = (int) (cardHeight * 0.6);
 			int xDelta = cardWidth / 2;
-			int xPos = (int) ((getWidth() / 2) - (cardWidth * (hand.size() / 4.0)));
+			int xPos = (int) ((getWidth() / 2.0) - (cardWidth * (hand.size() / 4.0)));
 			int yPos = (getHeight() - 20) - cardHeight;
 			for (Card card : hand.cards()) {
 				Rectangle bounds = new Rectangle(xPos, yPos, cardWidth, cardHeight);
@@ -231,6 +231,7 @@ public class SimpleCards {
 			}
 		}
 
+		@Override
 		protected void paintComponent(Graphics g) {
 			super.paintComponent(g);
 			Graphics2D g2d = (Graphics2D) g.create();
