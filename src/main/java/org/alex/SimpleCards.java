@@ -26,9 +26,7 @@ public class SimpleCards {
 	}
 
 	public SimpleCards() {
-		EventQueue.invokeLater(new Runnable() {
-			@Override
-			public void run() {
+		EventQueue.invokeLater( () -> {
 				try {
 					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 				} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
@@ -54,7 +52,6 @@ public class SimpleCards {
 				frame.pack();
 				frame.setLocationRelativeTo(null);
 				frame.setVisible(true);
-			}
 		});
 	}
 
