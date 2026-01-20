@@ -156,7 +156,7 @@ public class Hand {
 	private String printStack() {
 		StringBuilder stack = new StringBuilder();
 		for (Card card : cards) {
-			stack.append(stack.isEmpty() ? "": "/");
+			stack.append(stack.isEmpty() ? "" : "/");
 			stack.append(card.toString());
 		}
 		return stack.toString();
